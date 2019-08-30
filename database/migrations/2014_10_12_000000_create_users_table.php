@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique()->comment('电话');
             $table->string('email')->unique()->comment('邮箱');
             $table->string('password')->comment('密码');
+            $table->string('qrcode')->comment('分销二维码');
 
             $table->rememberToken();
             $table->timestamps();
