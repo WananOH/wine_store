@@ -13,6 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api) {
+
+    $api->group(['middleware' => 'auth:api'],function ($api) {
+        $api->resource('order','OrderController');
+        $api->resource('cart','CartController');
+    });
+
+    $api->post('auth/login', 'AuthController@login');
+    $api->get('category', 'CategoryController@index');
+    $api->resource('product','ProductController');
 });
+
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});*/

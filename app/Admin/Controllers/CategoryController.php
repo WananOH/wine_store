@@ -116,7 +116,7 @@ class CategoryController extends Controller
 
 
     /**
-     * 删除商品
+     * 删除商品分类
      * Remove the specified resource from storage.
      *
      * @param int $id

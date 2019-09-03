@@ -23,6 +23,7 @@ class CreateUserAddressesTable extends Migration
             $table->unsignedInteger('zip_code')->comment('邮编');
             $table->string('contact_name')->comment('联系人姓名');
             $table->string('contact_phone')->comment('联系人电话');
+            $table->dateTime('last_used_at')->comment('最近使用时间');
 
             $table->timestamps();
         });
