@@ -8,7 +8,6 @@ use App\Models\Order;
 use App\Jobs\CloseOrder;
 use App\Models\UserAddress;
 use App\Services\CartService;
-use App\Exceptions\InvalidRequestException;
 
 class OrderService
 {
@@ -29,7 +28,7 @@ class OrderService
 
             $order = new Order([
                 'address' => [ // 將地址信息放入订单中
-                    'address' => $address->full_address,
+                    'address' => $address->address,
                     'zip_code' => $address->zip_code,
                     'contact_name' => $address->contact_name,
                     'contact_phone' => $address->contact_phone,
@@ -54,7 +53,7 @@ class OrderService
 
                 $totalAmount += $product->price * $data['amount'];
                 if ($product->decreaseStock($data['amount']) <= 0) {
-                    throw new InvalidRequestException('该商品库存不足');
+                    throw new \Exception('该商品库存不足');
                 }
             }
 

@@ -18,8 +18,10 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api) {
 
     $api->group(['middleware' => 'auth:api'],function ($api) {
+        /*用户订单*/
         $api->resource('order','OrderController');
-
+        /*用户地址*/
+        $api->resource('address','UserAddressController');
         /*购物车*/
         $api->get('cart', 'CartController@index');
         $api->post('cart', 'CartController@add');
