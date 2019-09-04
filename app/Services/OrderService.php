@@ -26,6 +26,7 @@ class OrderService
         $order = \DB::transaction(function () use ($user, $address, $remark, $items) {
             // 更新此地址最后使用时间
             $address->update(['last_used_at' => now()]);
+
             $order = new Order([
                 'address' => [ // 將地址信息放入订单中
                     'address' => $address->full_address,
@@ -36,38 +37,39 @@ class OrderService
                 'remark' => $remark,
                 'total_amount' => 0,
             ]);
+
             $order->user()->associate($user);
             $order->save();
 
             $totalAmount = 0;
             foreach ($items as $data) {
-                $sku  = Product::find($data['sku_id']);
-                // 創建一個 OrderItem 並直接與當前訂單關聯
+                $product  = Product::find($data['product_id']);
+                // 创建订单与产品的关联关系
                 $item = $order->items()->make([
                     'amount' => $data['amount'],
-                    'price'  => $sku->price,
+                    'price'  => $product->price,
                 ]);
-                $item->product()->associate($sku->product_id);
-                $item->productSku()->associate($sku);
+                $item->product()->associate($product);
                 $item->save();
-                $totalAmount += $sku->price * $data['amount'];
-                if ($sku->decreaseStock($data['amount']) <= 0) {
+
+                $totalAmount += $product->price * $data['amount'];
+                if ($product->decreaseStock($data['amount']) <= 0) {
                     throw new InvalidRequestException('该商品库存不足');
                 }
             }
 
-            // 更新訂單總金額
+            // 更新订单总金额
             $order->update(['total_amount' => $totalAmount]);
 
-            // 將下單的商品從購物車中移除
-            $skuIds = collect($items)->pluck('sku_id')->all();
-            app(CartService::class)->remove($skuIds);
+            // 将下单商品从购物车移除
+            $productIds = collect($items)->pluck('product_id')->all();
+            app(CartService::class)->remove($productIds);
 
             return $order;
         });
 
         // 開啟一個任務，一段時間仍未付款者，將自動結束訂單
-        dispatch(new CloseOrder($order, config('app.order_ttl')));
+        //dispatch(new CloseOrder($order, config('app.order_ttl')));
 
         return $order;
     }

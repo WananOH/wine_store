@@ -31,4 +31,26 @@ class Product extends Model
             })
             ->paginate(10);
     }
+
+
+    public function decreaseStock($amount)
+    {
+        if ($amount < 0) {
+            throw new \Exception('減少的库存量不可小于0');
+        }
+
+        return $this->query()
+            ->where('id', $this->id)
+            ->where('stock', '>=', $amount)
+            ->decrement('stock', $amount);
+    }
+
+    public function addStock($amount)
+    {
+        if ($amount < 0) {
+            throw new \Exception('增加的库存量不可小于0');
+        }
+
+        $this->increment('stock', $amount);
+    }
 }

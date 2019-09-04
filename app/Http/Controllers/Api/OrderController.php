@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\OrderRequest;
 use App\Models\Order;
-use App\Models\Product;
 use App\Http\Controllers\Controller;
 use App\Models\UserAddress;
-use Illuminate\Http\Request;
+use App\Services\OrderService;
 
-class OrderController extends Controller{
+class OrderController extends Controller
+{
+    /**
+     * 订单列表
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $user = auth()->user();
@@ -20,6 +25,11 @@ class OrderController extends Controller{
         return response()->json(['status_code' => 200,'message' => '查询成功','data' => $orders]);
     }
 
+    /**
+     * 订单详情
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         $order = Order::findOrFail($id);
@@ -28,12 +38,19 @@ class OrderController extends Controller{
         return response()->json(['status_code' => 200,'message' => '查询成功','data' => $order]);
     }
 
-    public function store(OrderRequest $request)
+    /**
+     * 创建订单
+     * @param OrderRequest $request
+     * @param OrderService $orderService
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(OrderRequest $request,OrderService $orderService)
     {
         $user = auth()->user();
-        $address = UserAddress::find($request->input('address_id'));
+        $address = UserAddress::findOrFail($request->input('address_id'));
 
+        $orderService->store($user, $address, $request->input('remark'), $request->input('items'));
 
-
+        return response()->json(['status_code' => 201,'message' => '添加成功']);
     }
 }

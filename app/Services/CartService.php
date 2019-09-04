@@ -14,7 +14,7 @@ class CartService
      */
     public function get()
     {
-        return Auth::user()->cartItems()->with(['productSku.product'])->get();
+        return Auth::user()->cartItems()->with(['product'])->get();
     }
 
     /**
@@ -26,7 +26,7 @@ class CartService
      */
     public function add($product_id, $amount)
     {
-        $user = Auth::user();
+        $user = auth()->user();
         // 查询商品是否在购物车
         if ($item = $user->cartItems()->where('product_id', $product_id)->first()) {
             // 如果存在则叠加商品数量
@@ -43,10 +43,7 @@ class CartService
     }
 
     /**
-     * Remove product sku from cart.
-     *
-     * @param  int|array  $sku_ids
-     * @return void
+     * @param $product_ids
      */
     public function remove($product_ids)
     {

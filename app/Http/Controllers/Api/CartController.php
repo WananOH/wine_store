@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\RemoveCartRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\AddCartRequest;
-use App\Models\Product;
 use App\Services\CartService;
 
 class CartController extends Controller
@@ -24,14 +25,13 @@ class CartController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
         $cartItems = $this->cartService->get();
-        $addresses = $request->user()->addresses()->orderBy('last_used_at', 'desc')->get();
-        return view('cart.index', compact('cartItems', 'addresses'));
+
+        return response()->json(['status_code' => 200,'message' => '获取成功','data' => $cartItems]);
     }
 
     /**
@@ -42,19 +42,19 @@ class CartController extends Controller
      */
     public function add(AddCartRequest $request)
     {
-        $this->cartService->add($request->input('sku_id'), $request->input('amount'));
-        return [];
+        $this->cartService->add($request->input('product_id'), $request->input('amount'));
+
+        return response()->json(['status_code' => 201,'message' => '添加成功']);
     }
 
     /**
-     * Remove products from cart.
-     *
-     * @param  \App\Models\ProductSku  $sku
-     * @return array
+     * @param RemoveCartRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function remove(ProductSku $sku)
+    public function remove(RemoveCartRequest $request)
     {
-        $this->cartService->remove($sku->id);
-        return [];
+        $this->cartService->remove($request->get('product_id'));
+
+        return response()->json(['status_code' => 201,'message' => '删除成功']);
     }
 }

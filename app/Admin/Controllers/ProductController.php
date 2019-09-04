@@ -155,7 +155,7 @@ class ProductController extends Controller
         $grid->price('价格')->display(function ($price) {
             return '￥' . $price;
         });
-        $grid->sku('库存');
+        $grid->stock('库存');
         $grid->sold_count('销量');
 
 
@@ -195,7 +195,7 @@ class ProductController extends Controller
         $show->price('价格')->as(function ($price) {
             return '￥' . $price;
         });
-        $show->sku('库存');
+        $show->stock('库存');
         $show->sold_count('销量');
         $show->created_at('添加日期');
 
@@ -222,7 +222,7 @@ class ProductController extends Controller
             $form->multipleImage('images', '产品图片')->help('按住ctrl可以选择多张图片')->removable();
             $form->textarea('description', '产品详情')->rules('required', ['required' => '请填写资讯标题']);
             $form->text('price', '产品价格')->rules('required', ['required' => '请填写资讯标题']);
-            $form->text('sku', '库存')->rules('required|integer', ['required' => '请填写资讯标题','integer' => '库存必须是整数']);
+            $form->text('stock', '库存')->rules('required|integer', ['required' => '请填写资讯标题','integer' => '库存必须是整数']);
             $is_display = [
                 'on' => ['value' => '1', 'text' => '上架', 'color' => 'primary'],
                 'off' => ['value' => '0', 'text' => '下架', 'color' => 'danger'],
@@ -264,7 +264,7 @@ class ProductController extends Controller
      */
     protected function save(Request $request, $id = null)
     {
-        $data = $request->only(['title', 'category_id','thumb', 'images', 'description', 'status', 'price','sku']);
+        $data = $request->only(['title', 'category_id','thumb', 'images', 'description', 'status', 'price','stock']);
 
         if (isset($data['thumb']) && $data['thumb'] instanceof \Illuminate\Http\UploadedFile) {
             $imagePath = $data['thumb']->store(
