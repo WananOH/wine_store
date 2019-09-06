@@ -67,8 +67,8 @@ class OrderService
             return $order;
         });
 
-        // 開啟一個任務，一段時間仍未付款者，將自動結束訂單
-        //dispatch(new CloseOrder($order, config('app.order_ttl')));
+        // 延迟任务，一段时间未支付，修改订单状态为关闭
+        dispatch(new CloseOrder($order, config('app.order_ttl')));
 
         return $order;
     }
