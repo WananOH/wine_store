@@ -71,4 +71,11 @@ class UserAddressController extends Controller
         $user_address->delete();
         return response()->json(['status_code' => 204,'message' => '删除成功']);
     }
+
+    public function show($id)
+    {
+        $user_address = UserAddress::findOrFail($id);
+
+        return response()->json(['status_code' => 200,'message' => '查询成功','data' => $user_address]);
+    }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RemoveCartRequest;
-use Illuminate\Http\Request;
 use App\Http\Requests\AddCartRequest;
 use App\Services\CartService;
 
