@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('title')->comment('产品标题');
             $table->unsignedInteger('category_id')->comment('产品分类id');
             $table->text('description')->comment('详细描述');
+            $table->text('params')->comment('产品参数');
             $table->string('thumb')->comment('封面图');
             $table->text('image')->comment('产品图片');
             $table->unsignedInteger('stock')->default(0)->comment('当前库存');

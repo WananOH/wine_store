@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Routing\Router;
+use Tests\Controllers\FileController;
 
 Admin::routes();
 
@@ -18,4 +19,8 @@ Route::group([
 
     $router->post('orders/{order}/ship', 'OrderController@ship')->name('admin.orders.ship');
     $router->resource('orders', 'OrderController')->names('admin.orders')->only('index', 'show');
+
+    $router->resource('notices','NoticeController')->names('admin.notices');
+    $router->resource('banners','BannerController')->names('admin.banners');
+
 });

@@ -105,6 +105,7 @@ class CategoryController extends Controller
                 ? '<span class="label label-success">已启用</span>'
                 : '<span class="label label-danger">未启用</span>';
         });
+        $grid->disableExport();
         $grid->actions(function ($actions) {
             $actions->disableView();
         });

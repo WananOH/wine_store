@@ -54,6 +54,6 @@ class CartController extends Controller
     {
         $this->cartService->remove($request->get('product_id'));
 
-        return response()->json(['status_code' => 201,'message' => '删除成功']);
+        return response()->json(['status_code' => 204,'message' => '删除成功']);
     }
 }

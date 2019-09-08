@@ -6,7 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected $casts = [
+        'params' => 'json'
+    ];
     protected $guarded = [];
+
+    public static function getSelectOptions()
+    {
+        $options = self::select('id','title')->where('status',1)->orderBy('sort','desc')->get();
+        $selectOption = [];
+        foreach ($options as $option){
+            $selectOption[$option->id] = $option->title;
+        }
+        return $selectOption;
+    }
+
+    public function getParamsAttribute($extra)
+    {
+        return array_values(json_decode($extra, true) ?: []);
+    }
+
 
     public function setImagesAttribute($images)
     {

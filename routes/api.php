@@ -17,7 +17,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api) {
 
-    $api->group(['middleware' => 'auth:api'],function ($api) {
+    $api->group(['middleware' => ['auth:api','api_token']],function ($api) {
         $api->resource('user','UserController');
         /*用户订单*/
         $api->resource('order','OrderController');
@@ -33,6 +33,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api)
     $api->post('auth/login', 'AuthController@login');
     $api->get('category', 'CategoryController@index');
     $api->resource('product','ProductController');
+    $api->get('notice','NoticeController@index');
+    $api->get('banner','BannerController@index');
 
 
 });
