@@ -5,13 +5,10 @@ namespace App\Admin\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
-use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
-use Encore\Admin\Layout\Row;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\MessageBag;
@@ -19,7 +16,7 @@ use Illuminate\Support\MessageBag;
 class CategoryController extends Controller
 {
     /**
-     * 商品列表
+     * 分类列表
      * @param Content $content
      * @return Content
      */
@@ -32,7 +29,21 @@ class CategoryController extends Controller
     }
 
     /**
-     * 编辑商品
+     * Create interface.
+     *
+     * @param \Encore\Admin\Layout\Content $content
+     * @return \Encore\Admin\Layout\Content
+     */
+    public function create(Content $content)
+    {
+        return $content
+            ->header('添加分类')
+            ->description('description')
+            ->body($this->form());
+    }
+
+    /**
+     * 编辑分类
      * @param $id
      * @param Content $content
      * @return Content
@@ -46,7 +57,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * 商品表单
+     * 分类表单
      * @return Form
      */
     protected function form()
@@ -56,6 +67,7 @@ class CategoryController extends Controller
             $form->display('id', 'ID');
             $form->hidden('id');
             $form->text('title', '商品分类名称：')->rules('required', ['required' => '请填写商品分类名称']);
+            $form->decimal('sort', '排序（越大越靠前）：');
 
             $is_display = [
                 'on' => ['value' => '1', 'text' => '启用', 'color' => 'primary'],
@@ -114,7 +126,32 @@ class CategoryController extends Controller
         return $grid;
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function store(Request $request)
+    {
+        $this->save($request);
 
+        admin_toastr(trans('admin.save_succeeded'));
+
+        return redirect(admin_url('categories'));
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update(Request $request, $id)
+    {
+        $this->save($request, $id);
+
+        admin_toastr(trans('admin.update_succeeded'));
+
+        return redirect(admin_url('categories'));
+    }
 
     /**
      * 删除商品分类
@@ -141,38 +178,21 @@ class CategoryController extends Controller
     }
 
     /**
-     * Save product.
+     * Save category.
      *
      * @param \Illuminate\Http\Request $request
      * @param int|null $id
-     * @return \App\Models\Product
+     * @return \App\Models\Category
      */
     protected function save(Request $request, $id = null)
     {
-        $data = $request->only(['title', 'status']);
+        $data = $request->only(['title', 'status','sort']);
 
-        if (isset($data['thumb']) && $data['thumb'] instanceof \Illuminate\Http\UploadedFile) {
-            $imagePath = $data['thumb']->store(
-                config('admin.upload.directory.image'),
-                ['disk' => config('admin.upload.disk')]
-            );
-            $data['thumb'] = Storage::disk(config('admin.upload.disk'))->url($imagePath);
-        }
-
-        if (isset($data['images'])) {
-            foreach ($data['images'] as $key => $image){
-                $imagePath = $image->store(
-                    config('admin.upload.directory.image'),
-                    ['disk' => config('admin.upload.disk')]
-                );
-                $data['images'][$key] = Storage::disk(config('admin.upload.disk'))->url($imagePath);
-            }
-        }
         if(isset($data['status'])){
             $data['status'] = is_string($data['status']) ? $data['status'] === 'on' : $data['status'];
         }
         // Update or create porduct
-        $product = Product::updateOrCreate(['id' => $id], $data);
+        $product = Category::updateOrCreate(['id' => $id], $data);
 
         return $product;
     }

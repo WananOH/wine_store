@@ -137,7 +137,7 @@ class BannerController extends Controller
     }
 
     /**
-     * 删除Banner分类
+     * 删除Banner
      * Remove the specified resource from storage.
      *
      * @param int $id
@@ -161,7 +161,7 @@ class BannerController extends Controller
     }
 
     /**
-     * Save product.
+     * Save Banner.
      *
      * @param \Illuminate\Http\Request $request
      * @param int|null $id
@@ -182,7 +182,7 @@ class BannerController extends Controller
         if(isset($data['status'])){
             $data['status'] = is_string($data['status']) ? $data['status'] === 'on' : $data['status'];
         }
-        // Update or create porduct
+        // Update or create banner
         $banner = Banner::updateOrCreate(['id' => $id], $data);
 
         return $banner;

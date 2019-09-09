@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
             $table->text('image')->comment('产品图片');
             $table->unsignedInteger('stock')->default(0)->comment('当前库存');
             $table->unsignedInteger('sold_count')->default(0)->comment('销量');
-            $table->decimal('price', 10, 0)->comment('单价');
+            $table->decimal('price', 10, 2)->comment('单价');
             $table->tinyInteger('status')->comment('产品状态：0下架，1上架');
             $table->integer('sort')->default(0)->comment('排序，越大越靠前');
 

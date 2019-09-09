@@ -43,7 +43,7 @@ class NoticeController extends Controller
     }
 
     /**
-     * 编辑Banner
+     * 编辑公告
      * @param $id
      * @param Content $content
      * @return Content
@@ -57,7 +57,7 @@ class NoticeController extends Controller
     }
 
     /**
-     * Banner表单
+     * 公告表单
      * @return Form
      */
     protected function form()
@@ -130,7 +130,7 @@ class NoticeController extends Controller
     }
 
     /**
-     * 删除Banner分类
+     * 删除公告
      * Remove the specified resource from storage.
      *
      * @param int $id
@@ -154,7 +154,7 @@ class NoticeController extends Controller
     }
 
     /**
-     * Save product.
+     * Save notice.
      *
      * @param \Illuminate\Http\Request $request
      * @param int|null $id
@@ -168,7 +168,7 @@ class NoticeController extends Controller
         if(isset($data['status'])){
             $data['status'] = is_string($data['status']) ? $data['status'] === 'on' : $data['status'];
         }
-        // Update or create porduct
+        // Update or create notice
         $banner = Notice::updateOrCreate(['id' => $id], $data);
 
         return $banner;
