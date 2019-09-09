@@ -2,7 +2,6 @@
 
 namespace App\Admin\Controllers;
 
-use App\Exceptions\InvalidRequestException;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;

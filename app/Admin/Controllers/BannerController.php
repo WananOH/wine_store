@@ -4,18 +4,13 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
-use App\Models\Category;
 use App\Models\Product;
-use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
-use Encore\Admin\Layout\Row;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\MessageBag;
 
 class BannerController extends Controller
 {

@@ -3,14 +3,9 @@
 namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Notice;
-use App\Models\Product;
 use App\Models\User;
-use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Grid;
-use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
-use Encore\Admin\Layout\Row;
 use Encore\Admin\Show;
 
 class UserController extends Controller

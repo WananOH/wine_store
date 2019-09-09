@@ -5,7 +5,6 @@ namespace App\Admin\Controllers;
 use App\Http\Controllers\Controller;
 
 use App\Models\Notice;
-use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
