@@ -45,10 +45,15 @@ class CartService
     /**
      * @param $product_ids
      */
-    public function remove($product_ ids)
+    public function remove($product_ids, $cart_id = 1)
     {
         $product_ids = is_array($product_ids) ? $product_ids : func_get_args();
 
-        Auth::user()->cartItems()->whereIn('id', $product_ids)->delete();
+        if($cart_id) {
+            Auth::user()->cartItems()->whereIn('id', $product_ids)->delete();
+        }else{
+            Auth::user()->cartItems()->whereIn('product_id', $product_ids)->delete();
+        }
+
     }
 }

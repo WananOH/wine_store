@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserAddressRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\UserAddress;
 
@@ -42,7 +43,9 @@ class UserAddressController extends Controller
      */
     public function store(UserAddressRequest $request)
     {
-        $request->user()->addresses()->create($request->only($this->field));
+        $data = $request->only($this->field);
+        $data['last_used_at'] = Carbon::now();
+        $request->user()->addresses()->create($data);
 
         return response()->json(['status_code' => 201,'message' => '创建成功']);
     }

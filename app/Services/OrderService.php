@@ -62,7 +62,7 @@ class OrderService
 
             // 将下单商品从购物车移除
             $productIds = collect($items)->pluck('product_id')->all();
-            app(CartService::class)->remove($productIds);
+            app(CartService::class)->remove($productIds,0);
 
             return $order;
         });
