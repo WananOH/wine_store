@@ -10,7 +10,6 @@ class UserController extends Controller{
 
     public function index()
     {
-
         $user = auth()->user();
         $user = collect($user)->only('name','nickname','avatar','phone','email','qrcode');
 
