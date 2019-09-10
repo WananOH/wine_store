@@ -18,6 +18,8 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api) {
 
     $api->group(['middleware' => ['auth:api','api_token']],function ($api) {
+        $api->post('user/code','UserController@code');
+        $api->put('user/phone','UserController@phone');
         $api->resource('user','UserController');
         /*用户订单*/
         $api->resource('order','OrderController');

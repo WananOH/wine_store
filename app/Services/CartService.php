@@ -45,7 +45,7 @@ class CartService
     /**
      * @param $product_ids
      */
-    public function remove($product_ ids)
+    public function remove($product_ids)
     {
         $product_ids = is_array($product_ids) ? $product_ids : func_get_args();
 
