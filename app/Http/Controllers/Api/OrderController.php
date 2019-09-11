@@ -17,10 +17,16 @@ class OrderController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $orders = Order::with(['items.product'])
-            ->where('user_id', $user->id)
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $status = request('ship_status');
+
+        $query = Order::with(['items.product'])->where('user_id', $user->id)
+            ->where('closed','!=',1);
+            if( $status != 4){
+                $query->where('ship_status',$status);
+            };
+
+        $orders = $query->orderBy('created_at', 'desc')
+            ->paginate(4);
 
         return response()->json(['status_code' => 200,'message' => '查询成功','data' => $orders]);
     }
