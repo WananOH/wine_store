@@ -130,6 +130,19 @@ class BannerController extends Controller
 
         return redirect(admin_url('banners'));
     }
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update(Request $request, $id)
+    {
+        $this->save($request, $id);
+
+        admin_toastr(trans('admin.update_succeeded'));
+
+        return redirect(admin_url('banners'));
+    }
 
     /**
      * 删除Banner
