@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3>wesley</h3>
+</body>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script>
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    $(function(){
+        var code = getQueryString('code')
+        if (code){
+            $.ajax({
+                url:"http://wine.siebelles.com/api/auth/login", //请求的url地址
+                dataType:"json", //返回格式为json
+                async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+                data:{"code":code,"parent_id": 1}, //参数值
+                type:"post", //请求方式
+
+                success:function(req){
+                    console.log(req)
+                },
+                complete:function(){
+                    //请求完成的处理
+                },
+                error:function(){
+                    //请求出错处理
+                }
+            });
+        }else {
+            var url = 'http://h5.siebelles.com?parent_id=1';
+            window.location = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8432d74b87c26ec9&redirect_uri="+url+"&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+        }
+    })
+</script>
+</html>
