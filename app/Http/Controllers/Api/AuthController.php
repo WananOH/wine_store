@@ -13,6 +13,7 @@ class AuthController extends Controller{
 
     public function login(Request $request)
     {
+        $_POST['code'] = $request->code;
         $app = Factory::officialAccount(config('wechat.official_account.default'));
         $oauth = $app->oauth;
         $user = $oauth->user()->getOriginal();

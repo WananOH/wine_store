@@ -30,7 +30,7 @@ class WechatController extends Controller{
             $json = $app->jssdk->bridgeConfig($result['prepay_id']);
             \Log::info($json);
 
-            return response()->json(['status_code' => 200,'message' => '查询成功','data' => $json]);
+            return response()->json(['status_code' => 200,'message' => '获取成功','data' => $json]);
         } else {
             $msg = "签名失败，请稍后再试!";
 

@@ -30,7 +30,11 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api)
         $api->post('cart', 'CartController@add');
         $api->delete('cart', 'CartController@remove');
 
+        /*微信支付*/
+        $api->get('wechat/pay/{id}', 'WechatController@pay');
     });
+
+    $api->any('wechat/notify', 'WechatController@notify');
 
     $api->post('auth/login', 'AuthController@login');
     $api->get('category', 'CategoryController@index');
