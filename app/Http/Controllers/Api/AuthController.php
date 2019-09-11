@@ -26,10 +26,10 @@ class AuthController extends Controller{
         $user = User::updateOrCreate(['openid' => $user['openid']], $data);;
         if (\Auth::loginUsingId($user->id)) {
             $user = \Auth::user();
-//            if(!$user->qrcode){
-//                $user->qrcode = $this->generateQrcode($user->id);
-//                $user->save;
-//            }
+            if(!$user->qrcode){
+                $user->qrcode = $this->generateQrcode($user->id);
+                $user->save;
+            }
             $token = $user->createToken($user->id . '-' . $user->openid)->accessToken;
 
             return response()->json(['status_code' => 201,'message' => '登录成功','data' => $token]);
