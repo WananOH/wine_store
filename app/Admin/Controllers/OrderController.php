@@ -48,13 +48,15 @@ class OrderController extends Controller
             return $value ? '已付款' : '未付款';
         });
         $grid->ship_status('订单状态')->using([
-            0 => '未发货',
-            1 => '已发货',
-            2 => '已签收',
+            0 => '未支付',
+            1 => '未发货',
+            2 => '已发货',
+            3 => '已签收',
         ])->label([
-            0 => 'warning',
-            1 => 'info',
-            2 => 'success',
+            0 => 'default',
+            1 => 'warning',
+            2 => 'info',
+            3 => 'success',
         ]);
 
         $grid->model()->where ('closed', 0);
@@ -86,7 +88,7 @@ class OrderController extends Controller
         if (!$order->paid_at) {
             admin_toastr('该订单尚未付款');
         }
-        if ($order->ship_status != 0) {
+        if ($order->ship_status > 1) {
             admin_toastr('该订单已发货');
         }
 
@@ -99,7 +101,7 @@ class OrderController extends Controller
         ]);
 
         $order->update([
-            'ship_status' => 1,
+            'ship_status' => 2,
             'ship_data' => $data,
         ]);
 
