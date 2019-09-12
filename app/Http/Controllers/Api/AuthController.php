@@ -40,7 +40,8 @@ class AuthController extends Controller{
     }
 
     public function generateQrcode($id){
-        QrCode::format('png')->size(120)->errorCorrection('H')->generate($id, storage_path('app/public/images/' . 'qrcode-'.$id . '.png'));
+        $content = "http://h5.siebelles.com?parent_id=" . $id;
+        QrCode::format('png')->size(120)->errorCorrection('H')->generate($content, storage_path('app/public/images/' . 'qrcode-'.$id . '.png'));
 
         return $qrcode_contents = Storage::disk('public')->url('/images/' .  'qrcode-'.$id . '.png');
     }
