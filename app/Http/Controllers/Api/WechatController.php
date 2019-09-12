@@ -51,7 +51,7 @@ class WechatController extends Controller{
                 $order->payment_no = $notify['transaction_id'];
                 $order->ship_status = 1;
                 $order->save();
-                $this->dispatch(new OrderRebate($order));
+               // $this->dispatch(new OrderRebate($order));
             } else {
                 return $successful('通信失败，请稍后再通知我');
             }

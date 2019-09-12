@@ -59,4 +59,18 @@ class OrderController extends Controller
 
         return response()->json(['status_code' => 201,'message' => '添加成功']);
     }
+
+    /**
+     * 删除订单
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->closed = 1;
+        $order->save();
+
+        return response()->json(['status_code' => 204,'message' => '删除成功']);
+    }
 }

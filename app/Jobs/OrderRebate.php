@@ -44,35 +44,38 @@ class OrderRebate implements ShouldQueue
         $parents = $this->parents($users,$this->order->user->parent_id);
         //第一层
         if(isset($parents[0])){
+            \Log::info('一级分销提现');
             $app->transfer->toBalance([
                 'partner_trade_no' => '1233455',
                 'openid' => $parents[0]['openid'],
                 'check_name' => 'FORCE_CHECK',
                 're_user_name' => $parents[0]['name'],
-                'amount' => 10000,
+                'amount' => $this->order->total_amount,
                 'desc' => '理赔',
             ]);
         }
 
         //第二层
         if(isset($parents[0])){
+            \Log::info('二级分销提现');
             $app->transfer->toBalance([
                 'partner_trade_no' => '1233455',
                 'openid' => $parents[1]['openid'],
                 'check_name' => 'FORCE_CHECK',
                 're_user_name' => $parents[1]['name'],
-                'amount' => 10000,
+                'amount' => $this->order->total_amount,
                 'desc' => '理赔',
             ]);
         }
         //第三层
         if(isset($parents[0])){
+            \Log::info('三级分销提现');
             $app->transfer->toBalance([
                 'partner_trade_no' => '1233455',
                 'openid' => $parents[2]['openid'],
                 'check_name' => 'FORCE_CHECK',
                 're_user_name' => $parents[2]['name'],
-                'amount' => 10000,
+                'amount' => $this->order->total_amount,
                 'desc' => '理赔',
             ]);
         }
