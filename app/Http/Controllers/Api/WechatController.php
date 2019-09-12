@@ -48,6 +48,8 @@ class WechatController extends Controller{
                 $order = Order::where('no', $notify['out_trade_no'])->first();
                 $order->paid_at = Carbon::now();
                 $order->payment_method = 'wechat';
+                $order->payment_no = $notify['transaction_id'];
+                $order->ship_status = 1;
                 $order->save();
                 $this->dispatch(new OrderRebate($order));
             } else {

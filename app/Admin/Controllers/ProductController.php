@@ -11,10 +11,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\MessageBag;
-use Symfony\Component\Process\Process;
 
 class ProductController extends Controller
 {
@@ -78,59 +75,6 @@ class ProductController extends Controller
             ->body($this->form()->edit($id));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \App\Http\Requests\Admin\ProductRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {
-        $this->save($request);
-
-        admin_toastr(trans('admin.save_succeeded'));
-
-        return redirect(admin_url('products'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \App\Http\Requests\Admin\ProductEditRequest $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $this->save($request, $id);
-
-        admin_toastr(trans('admin.update_succeeded'));
-
-        return redirect(admin_url('products'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy($id)
-    {
-        if (Product::destroy($id)) {
-            $data = [
-                'status' => true,
-                'message' => trans('admin.delete_succeeded'),
-            ];
-        } else {
-            $data = [
-                'status' => false,
-                'message' => trans('admin.delete_failed'),
-            ];
-        }
-
-        return response()->json($data);
-    }
 
     /**
      * Make a grid builder.
@@ -235,7 +179,7 @@ class ProductController extends Controller
             $form->display('updated_at', '修改时间');
             $form->saving(function (Form $form) {
                 if (!$form->id) {
-                    $exist = Process::where(['title' => $form->title])
+                    $exist = Product::where(['title' => $form->title])
                         ->first();
                     if ($exist) {
                         $error = new MessageBag([
@@ -257,41 +201,5 @@ class ProductController extends Controller
         });
     }
 
-    /**
-     * Save product.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int|null $id
-     * @return \App\Models\Product
-     */
-    protected function save(Request $request, $id = null)
-    {
-        $data = $request->only(['title', 'category_id','thumb', 'images', 'description','params', 'status', 'price','stock']);
-
-        if (isset($data['thumb']) && $data['thumb'] instanceof \Illuminate\Http\UploadedFile) {
-            $imagePath = $data['thumb']->store(
-                config('admin.upload.directory.image'),
-                ['disk' => config('admin.upload.disk')]
-            );
-            $data['thumb'] = Storage::disk(config('admin.upload.disk'))->url($imagePath);
-        }
-
-        if (isset($data['images'])) {
-            foreach ($data['images'] as $key => $image){
-                $imagePath = $image->store(
-                    config('admin.upload.directory.image'),
-                    ['disk' => config('admin.upload.disk')]
-                );
-                $data['images'][$key] = Storage::disk(config('admin.upload.disk'))->url($imagePath);
-            }
-        }
-        if(isset($data['status'])){
-            $data['status'] = is_string($data['status']) ? $data['status'] === 'on' : $data['status'];
-        }
-        // Update or create porduct
-        $product = Product::updateOrCreate(['id' => $id], $data);
-
-        return $product;
-    }
 
 }

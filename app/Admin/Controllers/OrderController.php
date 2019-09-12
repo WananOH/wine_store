@@ -47,6 +47,7 @@ class OrderController extends Controller
         $grid->paid_at('是否付款')->display(function ($value){
             return $value ? '已付款' : '未付款';
         });
+        $grid->payment_method('付款方式');
         $grid->ship_status('订单状态')->using([
             0 => '未支付',
             1 => '未发货',
@@ -58,7 +59,7 @@ class OrderController extends Controller
             2 => 'info',
             3 => 'success',
         ]);
-
+        $grid->updated_at('更新时间');
         $grid->model()->where ('closed', 0);
         $grid->filter(function($filter){
 

@@ -36,7 +36,7 @@
       @foreach($order->items as $item)
       <tr>
         <td>
-          <div>{{ $item->product->title }}</div>
+          <div>{{ $item->product->title ?? ''}}</div>
         </td>
         <td>￥{{ $item->price }}</td>
         <td>{{ $item->amount }}</td>
@@ -49,8 +49,12 @@
         <td>发货状态：</td>
         <td>{{ $order->ship_status }} </td>
       </tr>
+      <tr>
+          <td>备注：</td>
+          <td>{{ $order->remark }}</td>
+      </tr>
 
-      @if($order->ship_status == 0)
+      @if($order->ship_status == 1)
         <tr>
           <td colspan="4">
             <form action="{{ route('admin.orders.ship', [$order]) }}" method="post" class="form-inline">

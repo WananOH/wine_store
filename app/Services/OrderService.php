@@ -45,6 +45,7 @@ class OrderService
                 $product  = Product::find($data['product_id']);
                 // 创建订单与产品的关联关系
                 $item = $order->items()->make([
+                    'title' => $product->title,
                     'amount' => $data['amount'],
                     'price'  => $product->price,
                 ]);

@@ -19,13 +19,11 @@ class CreateUsersTable extends Migration
             $table->string('nickname')->comment('微信昵称');
             $table->string('avatar')->comment('微信头像');
             $table->string('openid')->comment('微信opendid');
-            $table->string('phone')->unique()->comment('电话');
-            $table->string('email')->unique()->comment('邮箱');
-            $table->string('password')->comment('密码');
-            $table->string('qrcode')->comment('分销二维码');
+            $table->string('phone')->nullable()->unique()->comment('电话');
+            $table->string('email')->nullable()->unique()->comment('邮箱');
+            $table->string('qrcode')->nullable()->comment('分销二维码');
             $table->string('parent_id')->comment('上级分销商');
 
-            $table->rememberToken();
             $table->timestamps();
         });
     }

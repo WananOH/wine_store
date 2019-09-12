@@ -18,7 +18,8 @@ class CreateOrderItemsTable extends Migration
             $table->unsignedInteger('order_id')->comment('订单id');
             $table->unsignedInteger('product_id')->comment('产品id');
             $table->unsignedInteger('amount')->comment('产品数量');
-            $table->decimal('price', 10, 0)->comment('价格');
+            $table->string('title',255)->comment('商品名称');
+            $table->decimal('price', 10, 2)->comment('价格');
 
             $table->timestamps();
         });
