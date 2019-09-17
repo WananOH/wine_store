@@ -27,6 +27,8 @@ class UserController extends Controller
         $grid->avatar('用户头像')->image();
         $grid->phone('用户电话');
         $grid->created_at('注册时间');
+        $grid->current_rebate('当前可提奖励(元)');
+        $grid->total_rebate('历史总提成(元)');
 
         $grid->disableCreateButton();
         $grid->actions(function ($actions) {
@@ -56,6 +58,8 @@ class UserController extends Controller
         $show->avatar('用户头像')->image();
         $show->phone('联系电话');
         $show->created_at('注册日期');
+        $show->current_rebate('当前可提奖励(元)');
+        $show->total_rebate('历史总提成(元)');
 
         $show->panel()->tools(function ($tools) {
                 $tools->disableEdit();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BindPhoneRequest;
+use EasyWeChat\Factory;
 use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller{
@@ -41,5 +42,48 @@ class UserController extends Controller{
         $user->save();
         return response()->json(['status_code' => 201,'message' => '绑定成功']);
     }
+
+    public function rebate()
+    {
+        $user = auth()->user();
+        $app = Factory::payment(config('wechat.payment.default'));
+
+        /*$redpack = $app->redpack;
+        $redpackData = [
+            'mch_billno'   => $this->getTradeNo(),
+            'send_name'    => '西贝莱斯',
+            're_openid'    => $user->openid,
+            'total_amount' => $user->current_rebate * 100,  //单位为分，不小于100
+            'wishing'      => '西贝莱斯分销奖励',
+            'act_name'     => '西贝莱斯分销奖励',
+            'remark'       => '西贝莱斯分销奖励',
+            // ...
+        ];
+
+        $response  = $redpack->sendNormal($redpackData);*/
+
+        $response = $app->transfer->toBalance([
+            'partner_trade_no' => $this->getTradeNo(), // 商户订单号，需保持唯一性(只能是字母或者数字，不能包含有符号)
+            'openid' => $user->openid,
+            'check_name' => 'NO_CHECK', // NO_CHECK：不校验真实姓名, FORCE_CHECK：强校验真实姓名
+            're_user_name' => $user->name, // 如果 check_name 设置为FORCE_CHECK，则必填用户真实姓名
+            'amount' => $user->current_rebate * 100, // 企业付款金额，单位为分
+            'desc' => '分销奖励提现', // 企业付款操作说明信息。必填
+        ]);
+
+        return $response;
+    }
+
+    public  function getTradeNo()
+    {
+        $prefix = date('YmdHis');
+        for ($i = 0; $i < 10; $i++) {
+            $no = $prefix . str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            return $no;
+        }
+
+        return false;
+    }
+
 
 }
