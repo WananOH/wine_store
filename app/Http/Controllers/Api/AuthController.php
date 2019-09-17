@@ -29,7 +29,7 @@ class AuthController extends Controller{
             $user = \Auth::user();
             if(!$user->qrcode){
                 $user->qrcode = $this->generateQrcode($user->id);
-                $user->save;
+                $user->save();
             }
             $token = $user->createToken($user->id . '-' . $user->openid)->accessToken;
 

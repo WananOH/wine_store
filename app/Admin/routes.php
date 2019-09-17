@@ -12,14 +12,16 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('admin.home');
-    $router->get('users', 'UserController@index');
-    $router->get('users/{user}', 'UserController@show');
+    $router->resource('users', 'UserController')->names('admin.users')->only('index', 'show');
+    $router->resource('settings', 'SettingController')->names('admin.settings');
 
     $router->resource('categories', 'CategoryController')->names('admin.categories');
     $router->resource('products', 'ProductController')->names('admin.products');
 
     $router->post('orders/{order}/ship', 'OrderController@ship')->name('admin.orders.ship');
     $router->resource('orders', 'OrderController')->names('admin.orders')->only('index', 'show');
+    $router->resource('rewards', 'RewardController')->names('admin.rewards')->only('index', 'show');
+    $router->resource('rebates', 'RebateController')->names('admin.rebates')->only('index', 'show');
 
     $router->resource('notices','NoticeController')->names('admin.notices');
     $router->resource('banners','BannerController')->names('admin.banners');

@@ -67,10 +67,27 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
+        $user = auth()->user();
         $order = Order::findOrFail($id);
+        if($user->id != $order->user_id){
+            return response()->json(['status_code' => 422,'message' => '当前订单不能删除']);
+        }
         $order->closed = 1;
         $order->save();
 
         return response()->json(['status_code' => 204,'message' => '删除成功']);
+    }
+
+    public function confirm($id)
+    {
+        $user = auth()->user();
+        $order = Order::findOrFail($id);
+        if($order->ship_status != 2 || $user->id != $order->user_id){
+            return response()->json(['status_code' => 422,'message' => '当前订单不能确认收货']);
+        }
+        $order->ship_status = 3;
+        $order->save();
+
+        return response()->json(['status_code' => 201,'message' => '确认收货成功']);
     }
 }

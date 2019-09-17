@@ -22,6 +22,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api)
         $api->put('user/phone','UserController@phone');
         $api->resource('user','UserController');
         /*用户订单*/
+        $api->put('order/confirm/{id}','OrderController@confirm');
         $api->resource('order','OrderController');
         /*用户地址*/
         $api->resource('address','UserAddressController');
