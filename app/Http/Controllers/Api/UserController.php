@@ -48,7 +48,7 @@ class UserController extends Controller{
         $user = auth()->user();
         $app = Factory::payment(config('wechat.payment.default'));
 
-        /*$redpack = $app->redpack;
+        $redpack = $app->redpack;
         $redpackData = [
             'mch_billno'   => $this->getTradeNo(),
             'send_name'    => '西贝莱斯',
@@ -60,16 +60,16 @@ class UserController extends Controller{
             // ...
         ];
 
-        $response  = $redpack->sendNormal($redpackData);*/
+        $response  = $redpack->sendNormal($redpackData);
 
-        $response = $app->transfer->toBalance([
+        /*$response = $app->transfer->toBalance([
             'partner_trade_no' => $this->getTradeNo(), // 商户订单号，需保持唯一性(只能是字母或者数字，不能包含有符号)
             'openid' => $user->openid,
             'check_name' => 'NO_CHECK', // NO_CHECK：不校验真实姓名, FORCE_CHECK：强校验真实姓名
             're_user_name' => $user->name, // 如果 check_name 设置为FORCE_CHECK，则必填用户真实姓名
             'amount' => $user->current_rebate * 100, // 企业付款金额，单位为分
             'desc' => '分销奖励提现', // 企业付款操作说明信息。必填
-        ]);
+        ]);*/
 
         return $response;
     }

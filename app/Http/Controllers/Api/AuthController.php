@@ -21,10 +21,13 @@ class AuthController extends Controller{
             'name' => $user['nickname'],
             'nickname' => $user['nickname'],
             'avatar' => $user['headimgurl'],
-            'parent_id' => $request->parent_id ?? 0
         ];
+        $user = User::updateOrCreate(['openid' => $user['openid']], $data);
+        if(!$user->parent_id){
+            $user->parent_id = $request->parent_id ?? 0;
+            $user->save();
+        }
 
-        $user = User::updateOrCreate(['openid' => $user['openid']], $data);;
         if (\Auth::loginUsingId($user->id)) {
             $user = \Auth::user();
             if(!$user->qrcode){
