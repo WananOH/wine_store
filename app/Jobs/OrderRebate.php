@@ -7,7 +7,6 @@ use App\Models\RewardLog;
 use App\Models\Setting;
 use App\Models\User;
 use App\Traits\Tree;
-use EasyWeChat\Factory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
@@ -40,16 +39,18 @@ class OrderRebate implements ShouldQueue
      */
     public function handle()
     {
+        \Log::info('分销奖励start:');
         if (!$this->order->user->parent_id) return;
         $setting = Setting::first();
 
-        $users = User::get('id','openid','name','parent_id')->toArray();
+        $users = User::get(['id','openid','name','parent_id'])->toArray();
         $parents = $this->parents($users,$this->order->user->parent_id);
         //第一层
 
         try{
             DB::beginTransaction();
             if(isset($parents[0])){
+                \Log::info('分销奖励first-:'.$parents[0]['id']);
                 $user = User::find($parents[0]['id']);
                 $reward_first = $setting->rebate_first * $this->order->total_amount / 100;
                 RewardLog::create([
@@ -66,6 +67,7 @@ class OrderRebate implements ShouldQueue
 
             //第二层
             if(isset($parents[1])){
+                \Log::info('分销奖励second-:'.$parents[1]['id']);
                 $user = User::find($parents[1]['id']);
                 $reward_second = $setting->rebate_second * $this->order->total_amount / 100;
                 RewardLog::create([
@@ -81,6 +83,7 @@ class OrderRebate implements ShouldQueue
             }
             //第三层
             if(isset($parents[2])){
+                \Log::info('分销奖励third-:'.$parents[2]['id']);
                 $user = User::find($parents[2]['id']);
                 $reward_third = $setting->rebate_third * $this->order->total_amount / 100;
                 RewardLog::create([
