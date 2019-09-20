@@ -124,6 +124,24 @@ return [
     'cipher' => 'AES-256-CBC',
 
     'order_ttl' => env('ORDER_TTL', 1800),
+
+    'aliyun_sms' =>  [
+        'timeout' => 5.0,
+        'default' => [
+            'strategy' => \Overtrue\EasySms\Strategies\OrderStrategy::class,
+            'gateways' => [
+                'aliyun'
+            ],
+        ],
+        // 可用的网关配置
+        'gateways' => [
+            'aliyun' => [
+                'access_key_id' => 'LTAI4FjJ2vq',
+                'access_key_secret' => '',
+                'sign_name' => '西贝莱斯国际贸易有限公司',
+            ],
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

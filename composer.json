@@ -17,6 +17,7 @@
         "laravel/framework": "5.8.*",
         "laravel/passport": "^7.4",
         "laravel/tinker": "^1.0",
+        "overtrue/easy-sms": "^1.1",
         "overtrue/laravel-wechat": "~5.0",
         "predis/predis": "^1.1",
         "simplesoftwareio/simple-qrcode": "^2.0"

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BindPhoneRequest;
 use EasyWeChat\Factory;
 use Illuminate\Support\Facades\Redis;
+use Overtrue\EasySms\EasySms;
 
 class UserController extends Controller{
 
@@ -22,7 +23,16 @@ class UserController extends Controller{
         $user = auth()->user();
         $code = mt_rand(000000,999999);
         $code = Redis::setex($request->phone,60,$code);
-        //todo 发送短信
+
+        $easySms = new EasySms(config('app.aliyun_sms'));
+        $easySms->send($request->phone, [
+            'content'  => '您的验证码为: ' . $code,
+            'template' => 'SMS_173625597',
+            'data' => [
+                'code' => $code
+            ],
+        ]);
+
         return response()->json(['status_code' => 201,'message' => '发送成功','data' => $code]);
     }
 
