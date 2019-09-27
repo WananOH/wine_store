@@ -99,7 +99,7 @@ class BannerController extends Controller
         $grid->id('ID')->sortable();
         $grid->url('banner')->image();
         $grid->product_id('链接的商品')->display(function ($value){
-            return Product::find($value)->title;
+            return Product::find($value)->title ?? '';
         });
         $grid->status('是否启用')->display(function ($value) {
             return $value

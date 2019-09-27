@@ -33,7 +33,7 @@ class UserController extends Controller{
             ],
         ]);
 
-        return response()->json(['status_code' => 201,'message' => '发送成功','data' => $code]);
+        return response()->json(['status_code' => 201,'message' => '发送成功','data' => auth()->id()]);
     }
 
     /**

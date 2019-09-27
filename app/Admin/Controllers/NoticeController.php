@@ -129,6 +129,20 @@ class NoticeController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update(Request $request, $id)
+    {
+        $this->save($request, $id);
+
+        admin_toastr(trans('admin.save_succeeded'));
+
+        return redirect(admin_url('notices'));
+    }
+
+    /**
      * 删除公告
      * Remove the specified resource from storage.
      *
