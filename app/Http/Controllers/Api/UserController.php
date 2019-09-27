@@ -22,7 +22,7 @@ class UserController extends Controller{
     {
         $user = auth()->user();
         $code = mt_rand(000000,999999);
-        $code = Redis::setex($request->phone,60,$code);
+        Redis::setex($request->phone,60,$code);
 
         $easySms = new EasySms(config('app.aliyun_sms'));
         $easySms->send($request->phone, [

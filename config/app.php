@@ -136,9 +136,9 @@ return [
         // 可用的网关配置
         'gateways' => [
             'aliyun' => [
-                'access_key_id' => 'LTAI4FjJ2vq',
-                'access_key_secret' => '',
-                'sign_name' => '西贝莱斯国际贸易有限公司',
+                'access_key_id' => 'LTAI4FjJ2vqxwe2iNyNdq3p3',
+                'access_key_secret' => 'cTxFXbijxfit9j7DpDvOldbDwQWFAz',
+                'sign_name' => '西贝莱斯',
             ],
         ],
     ],
