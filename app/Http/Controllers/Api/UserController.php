@@ -21,8 +21,8 @@ class UserController extends Controller{
     public function code(BindPhoneRequest $request)
     {
         $user = auth()->user();
-        $code = mt_rand(000000,999999);
-        Redis::setex($request->phone,60,$code);
+        $code = mt_rand(100000,999999);
+        Redis::setex($request->phone,120,$code);
 
         $easySms = new EasySms(config('app.aliyun_sms'));
         $easySms->send($request->phone, [
