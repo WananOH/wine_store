@@ -46,4 +46,12 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public static function express()
+    {
+        return [
+            'yuantong' => '圆通',
+            'yunda' => '韵达'
+        ];
+    }
 }

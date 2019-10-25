@@ -90,4 +90,34 @@ class OrderController extends Controller
 
         return response()->json(['status_code' => 201,'message' => '确认收货成功']);
     }
+
+    public function express($oreder)
+    {
+        $post_data = array();
+        $post_data["customer"] = '3C03F5B34CC868FC685FAC94318AECF6';
+        $key= 'DITWBaJI4430' ;
+        $company = $oreder->ship_data['']
+
+        $post_data["param"] = '{"com":"yuantong","num":"YT4138953865496"}';
+
+        $url='http://poll.kuaidi100.com/poll/query.do';
+        $post_data["sign"] = md5($post_data["param"].$key.$post_data["customer"]);
+        $post_data["sign"] = strtoupper($post_data["sign"]);
+        $o="";
+        foreach ($post_data as $k=>$v)
+        {
+            $o.= "$k=".urlencode($v)."&";
+        }
+        $post_data=substr($o,0,-1);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        $result = curl_exec($ch);
+        $data = str_replace("\"",'"',$result );
+        $data = json_decode($data,true);
+
+        return $data;
+    }
 }

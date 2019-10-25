@@ -28,10 +28,11 @@ class OrderController extends Controller
      */
     public function show(Order $order, Content $content)
     {
+        $express = Order::express();
         return $content
             ->header('查看订单')
             ->description('description')
-            ->body(view('admin.orders.show', ['order' => $order]));
+            ->body(view('admin.orders.show', ['order' => $order,'express' => $express]));
     }
 
     public function grid()

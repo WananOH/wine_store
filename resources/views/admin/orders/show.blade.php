@@ -61,7 +61,13 @@
               @csrf
               <div class="form-group {{ $errors->has('express_company') ? 'has-error' : '' }}">
                 <label for="express_company" class="control-label">物流公司</label>
-                <input type="text" id="express_company" name="express_company" value="" class="form-control" placeholder="输入物流公司">
+{{--                <input type="text" id="express_company" name="express_company" value="" class="form-control" placeholder="输入物流公司">--}}
+                  <select name="express_company" id="express_company" class="form-control">
+                      @foreach($express as $key => $item)
+                        <option value="{{ $key }}">{{$item}}</option>
+                      @endforeach
+                  </select>
+
                 @if($errors->has('express_company'))
                   @foreach($errors->get('express_company') as $msg)
                     <span class="help-block">{{ $msg }}</span>
@@ -84,7 +90,7 @@
       @else
       <tr>
         <td>物流公司：</td>
-        <td>{{ $order->ship_data['express_company'] }}</td>
+        <td>{{ $express[$order->ship_data['express_company']] }}</td>
         <td>物流单号：</td>
         <td>{{ $order->ship_data['express_no'] }}</td>
       </tr>
