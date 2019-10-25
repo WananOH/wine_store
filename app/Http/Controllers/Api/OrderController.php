@@ -91,13 +91,11 @@ class OrderController extends Controller
         return response()->json(['status_code' => 201,'message' => '确认收货成功']);
     }
 
-    public function express($oreder)
+    public function express()
     {
         $post_data = array();
         $post_data["customer"] = '3C03F5B34CC868FC685FAC94318AECF6';
         $key= 'DITWBaJI4430' ;
-        $company = $oreder->ship_data['']
-
         $post_data["param"] = '{"com":"yuantong","num":"YT4138953865496"}';
 
         $url='http://poll.kuaidi100.com/poll/query.do';
