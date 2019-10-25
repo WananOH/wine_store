@@ -103,7 +103,7 @@ class UserController extends Controller{
         $app->jssdk->setUrl($url);
         $json = $app->jssdk->buildConfig($apis, false);
 
-        return response()->json(['status_code' => 200,'message' => '获取成功','data' => $json]);
+        return response()->json(['status_code' => 200,'message' => '获取成功','data' => json_decode($json)]);
     }
 
 }
