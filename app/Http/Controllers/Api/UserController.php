@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BindPhoneRequest;
 use EasyWeChat\Factory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Overtrue\EasySms\EasySms;
 
@@ -95,5 +96,14 @@ class UserController extends Controller{
         return false;
     }
 
+    public function address(Request $request){
+        $app = Factory::officialAccount(config('wechat.official_account.default'));
+        $apis = ['openAddress'];
+        $url = $request->get('url') ?? env('H5_URL');
+        $app->jssdk->setUrl($url);
+        $json = $app->jssdk->buildConfig($apis, false);
+
+        return response()->json(['status_code' => 200,'message' => '获取成功','data' => $json]);
+    }
 
 }

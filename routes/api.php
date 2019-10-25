@@ -21,6 +21,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api'], function ($api)
         $api->post('user/code','UserController@code');
         $api->post('user/rebate','UserController@rebate');
         $api->put('user/phone','UserController@phone');
+        $api->get('user/address','UserController@address');
         $api->resource('user','UserController');
         /*用户订单*/
         $api->put('order/confirm/{id}','OrderController@confirm');
