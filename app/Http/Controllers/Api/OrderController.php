@@ -40,6 +40,9 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
         $order->load(['items.product']);
+        if($order->ship_status > 1 && $order->ship_data){
+            $order->express = $this->express($order);
+        }
 
         return response()->json(['status_code' => 200,'message' => '查询成功','data' => $order]);
     }
@@ -91,12 +94,15 @@ class OrderController extends Controller
         return response()->json(['status_code' => 201,'message' => '确认收货成功']);
     }
 
-    public function express()
+    public function express($order)
     {
         $post_data = array();
         $post_data["customer"] = '3C03F5B34CC868FC685FAC94318AECF6';
-        $key= 'DITWBaJI4430' ;
-        $post_data["param"] = '{"com":"yuantong","num":"YT4138953865496"}';
+        $key= 'DITWBaJI4430';
+
+        $param = ["com" => $order->ship_data['express_company'],"num" => $order->ship_data['express_no'],"phone" => $order->address["contact_phone"]];
+
+        $post_data["param"] = json_encode($param);
 
         $url='http://poll.kuaidi100.com/poll/query.do';
         $post_data["sign"] = md5($post_data["param"].$key.$post_data["customer"]);
@@ -114,7 +120,7 @@ class OrderController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         $result = curl_exec($ch);
         $data = str_replace("\"",'"',$result );
-        $data = json_decode($data,true);
+        $data = json_encode($data);
 
         return $data;
     }

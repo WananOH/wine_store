@@ -50,8 +50,16 @@ class Order extends Model
     public static function express()
     {
         return [
-            'yuantong' => '圆通',
-            'yunda' => '韵达'
+            'yuantong' => '圆通快递',
+            'yunda' => '韵达快递',
+            'zhongtong' => '中通快递',
+            'shunfeng' => '顺丰速运',
+            'huitongkuaidi' => '百世快递',
+            'shentong' => '申通快递',
+            'ems' => 'ems',
+            'tiantian' =>'天天快递',
+            'debangwuliu' => '德邦物流',
+            'debangkuaidi' => '德邦快递'
         ];
     }
 }
