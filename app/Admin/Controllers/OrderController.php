@@ -61,7 +61,7 @@ class OrderController extends Controller
             3 => 'success',
         ]);
         $grid->updated_at('更新时间');
-        $grid->model()->where ('closed', 0);
+        $grid->model()->where ('closed', 0)->orderBy('created_at','desc');
         $grid->filter(function($filter){
 
             $filter->where(function ($query) {
@@ -69,6 +69,13 @@ class OrderController extends Controller
                     $query->where('name', 'like', "%{$this->input}%");
                 });
             }, '买家姓名');
+
+            $filter->equal('ship_status')->select([
+                0 => '未支付',
+                1 => '未发货',
+                2 => '已发货',
+                3 => '已签收',
+            ]);
 
         });
         $grid->actions(function ($actions) {
