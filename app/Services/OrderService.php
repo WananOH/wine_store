@@ -15,24 +15,19 @@ class OrderService
      * Store order.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\UserAddress  $address
+     * @param  array  $address
      * @param  string  $remark
      * @param  array  $items
      * @return \App\Models\Order
      */
-    public function store(User $user, UserAddress $address, $remark, $items)
+    public function store(User $user,  $address, $remark, $items)
     {
         $order = \DB::transaction(function () use ($user, $address, $remark, $items) {
             // 更新此地址最后使用时间
-            $address->update(['last_used_at' => now()]);
+            //$address->update(['last_used_at' => now()]);
 
             $order = new Order([
-                'address' => [ // 將地址信息放入订单中
-                    'address' => $address->address,
-                    'zip_code' => $address->zip_code,
-                    'contact_name' => $address->contact_name,
-                    'contact_phone' => $address->contact_phone,
-                ],
+                'address' => $address,
                 'remark' => $remark,
                 'total_amount' => 0,
             ]);

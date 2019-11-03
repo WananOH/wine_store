@@ -55,8 +55,11 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request,OrderService $orderService)
     {
+        \Log::info('store order');
+        \Log::info($request->all());
         $user = auth()->user();
-        $address = UserAddress::findOrFail($request->input('address_id'));
+       // $address = UserAddress::findOrFail($request->input('address_id'));
+        $address =  $request->address;
 
         $orderService->store($user, $address, $request->input('remark'), $request->input('items'));
 
