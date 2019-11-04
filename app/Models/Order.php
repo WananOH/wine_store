@@ -50,9 +50,8 @@ class Order extends Model
     public function getShipDataAttribute($value)
     {
         $arr = json_decode($value,true);
-
         $arr['express_company']=isset($arr['express_company']) ? $arr['express_company'] : '';
-        if(array_key_exists('express_company',$arr) &&  $arr['express_company'] != '' && request()->route()->getPrefix() != 'admin'){
+        if(request()->route()->getName() == 'order.index' && $arr['express_company'] != ''){
             $arr['express_company'] = self::express()[$arr['express_company']];
         }
         return $arr;

@@ -97,8 +97,9 @@ class OrderController extends Controller
         return response()->json(['status_code' => 201,'message' => '确认收货成功']);
     }
 
-    public function express($order)
+    public function express($id)
     {
+        $order = Order::findOrFail($id);
         $post_data = array();
         $post_data["customer"] = '3C03F5B34CC868FC685FAC94318AECF6';
         $key= 'DITWBaJI4430';
@@ -119,12 +120,12 @@ class OrderController extends Controller
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL,$url);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         $result = curl_exec($ch);
-        $data = str_replace("\"",'"',$result );
-        $data = json_encode($data);
+        //$data = str_replace("\"",'"',$result );
 
-        return $data;
+        return $result;
     }
 }
